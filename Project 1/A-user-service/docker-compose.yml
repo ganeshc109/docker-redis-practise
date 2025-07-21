@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: a-user-mysql
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_DATABASE: userdb
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  a-config-server:
+    build:
+      context: ../A-config-server
+    container_name: a-config-server
+    ports:
+      - "8888:8888"
+    networks:
+      - springnet
+
+  a-user-service:
+    build: .
+    container_name: a-user-service
+    restart: always
+    depends_on:
+      - mysql
+      - redis
+      - a-config-server   # ✅ Add this line
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_CONFIG_IMPORT: optional:configserver:http://a-config-server:8888
+      SPRING_PROFILES_ACTIVE: default
+      DEBUG: true
+    networks:
+      - springnet
+
+volumes:
+  mysql_data:
+
+networks:
+  springnet:
+    driver: bridge

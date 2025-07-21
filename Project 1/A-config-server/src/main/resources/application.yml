@@ -1,0 +1,22 @@
+server:
+  port: 8888
+
+spring:
+  application:
+    name: A-config-server
+
+  cloud:
+    config:
+      server:
+        git:
+          uri: file:///D:/Project 1/A-config-repo
+          default-label: main
+          search-paths:
+            - "*"
+      fail-fast: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
