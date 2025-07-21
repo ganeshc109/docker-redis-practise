@@ -9,6 +9,8 @@ import jakarta.persistence.Table;
 @Table(name = "users")
 public class User implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     private String id;
     private String name;
@@ -44,6 +46,15 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 
 }

@@ -9,7 +9,7 @@ spring:
     config:
       server:
         git:
-          uri: file:///D:/Project 1/A-config-repo
+          uri: file:///config-repo
           default-label: main
           search-paths:
             - "*"
